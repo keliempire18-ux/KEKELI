@@ -1,67 +1,40 @@
-"use client";
-import Image from "next/image";
-import { useRef, useState } from "react";
-import { Check, ShoppingBag } from "lucide-react";
-import { useCart } from "@/lib/cart";
-import { formatPrice } from "@/lib/format";
-import type { Product } from "@/lib/types";
+import type { Product, ProductColor } from "@/lib/types";
+import ProductCard from "./ProductCard";
 
-export default function ProductCard({ product: p, priority = false }: { product: Product; priority?: boolean }) {
-  const add = useCart((s) => s.add);
-  const [added, setAdded] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const [main, alt] = p.images;
-  const sizes = "(min-width:1024px) 25vw, 50vw";
+// Visuel de remplacement : fond dégradé luxe, cadre fin doré et monogramme K.
+// Intégré au code (aucun service externe) : il ne peut donc jamais s'afficher cassé.
+const art = (a: string, b: string, label: string) =>
+  "data:image/svg+xml;utf8," +
+  encodeURIComponent(
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 800"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="600" height="800" fill="url(#g)"/><rect x="40" y="40" width="520" height="720" fill="none" stroke="#d4af37" stroke-opacity=".35"/><text x="300" y="410" text-anchor="middle" font-family="Georgia,serif" font-size="150" font-weight="300" fill="#d4af37" fill-opacity=".85">K</text><text x="300" y="470" text-anchor="middle" font-family="Georgia,serif" font-size="22" letter-spacing="8" fill="#fff" fill-opacity=".6">${label}</text></svg>`
+  );
 
-  function handleAdd() {
-    add({ productId: p.id, slug: p.slug, name: p.name, price: p.price, image: main, size: p.sizes[0], color: p.colors[0]?.name });
-    setAdded(true);
-    clearTimeout(timer.current);
-    timer.current = setTimeout(() => setAdded(false), 1800);
-  }
+const demo = (
+  n: number, name: string, price: number, category: Product["category"], label: string,
+  a: string, b: string, sizes: string[], colors: ProductColor[], isNew = false
+): Product => ({
+  id: `demo-${n}`, slug: `demo-${n}`, name, price, category, sizes, colors, isNew,
+  images: [art(a, b, label), art(b, a, label)],
+});
+
+const DEMO: Product[] = [
+  demo(1, "Robe de soirée KEKELI", 185000, "robes", "ROBE", "#1c1608", "#050505", ["S", "M", "L"], [{ name: "Noir", hex: "#0a0a0a" }, { name: "Or", hex: "#d4af37" }], true),
+  demo(2, "Perruque HD Lace", 240000, "perruques", "PERRUQUE", "#2a1410", "#0a0605", ["Unique"], [{ name: "Noir de jais", hex: "#0a0a0a" }], true),
+  demo(3, "Sac en cuir premium", 320000, "sacs", "SAC", "#2b1a12", "#0d0806", ["Unique"], [{ name: "Cognac", hex: "#8a4b2a" }], true),
+  demo(4, "Escarpins Lueur", 135000, "chaussures", "ESCARPINS", "#0f1a24", "#050505", ["37", "38", "39", "40"], [{ name: "Nuit", hex: "#0f1a24" }]),
+  demo(5, "Jupe plissée Sillage", 98000, "jupes", "JUPE", "#14231c", "#050605", ["S", "M", "L"], [{ name: "Émeraude", hex: "#14532d" }]),
+  demo(6, "Collier Orbite", 76000, "accessoires", "ACCESSOIRE", "#2a2a2a", "#080808", ["Unique"], [{ name: "Or", hex: "#d4af37" }]),
+];
+
+export default function ProductGrid({ products }: { products: Product[] }) {
+  // Base vide (ou Supabase injoignable) : on affiche les produits d'exemple.
+  const list = products.length > 0 ? products : DEMO;
 
   return (
-    <article className="group">
-      <div className="relative aspect-[3/4] overflow-hidden bg-surface">
-        {main ? (
-          <>
-            <Image src={main} alt={p.name} fill priority={priority} sizes={sizes}
-              className={`object-cover transition-all duration-700 group-hover:scale-105 ${alt ? "group-hover:opacity-0" : ""}`} />
-            {alt && (
-              <Image src={alt} alt="" fill sizes={sizes}
-                className="scale-105 object-cover opacity-0 transition-all duration-700 group-hover:scale-110 group-hover:opacity-100" />
-            )}
-          </>
-        ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-surface to-line" aria-hidden />
-        )}
-        {p.isNew && <span className="glass absolute left-3 top-3 border px-2 py-1 text-[11px] tracking-widest">NOUVEAU</span>}
-      </div>
-
-      <div className="mt-4 flex items-start justify-between gap-4">
-        <h3 className="font-display text-2xl leading-tight">{p.name}</h3>
-        <p className="pt-1 text-sm text-muted">{formatPrice(p.price)}</p>
-      </div>
-
-      <button
-        onClick={handleAdd}
-        className="group/btn relative mt-5 flex w-full items-center justify-center overflow-hidden border-[0.5px] border-gold/50 bg-transparent px-6 py-4 transition-all duration-500 hover:border-gold hover:shadow-[0_0_28px_-6px_var(--gold)]"
-      >
-        {/* remplissage doré qui monte depuis le bas */}
-        <span className="absolute inset-0 origin-bottom scale-y-0 bg-gold transition-transform duration-500 ease-out group-hover/btn:scale-y-100 group-active/btn:scale-y-100" aria-hidden />
-        {/* reflet lumineux qui traverse le bouton */}
-        <span className="absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/50 opacity-0 transition-all duration-700 ease-out group-hover/btn:left-full group-hover/btn:opacity-100" aria-hidden />
-
-        <span className="relative flex items-center gap-3 text-xs uppercase tracking-[0.3em] transition-colors duration-500 group-hover/btn:text-black group-active/btn:text-black">
-          {added ? (
-            <Check size={16} strokeWidth={1.5} className="animate-pop" />
-          ) : (
-            <ShoppingBag size={16} strokeWidth={1.5}
-              className="transition-transform duration-500 group-hover:-translate-y-0.5 group-hover:-rotate-6 group-hover/btn:scale-110" />
-          )}
-          {added ? "Ajouté" : "Ajouter au panier"}
-        </span>
-      </button>
-    </article>
+    <div className="grid grid-cols-2 gap-x-4 gap-y-14 lg:grid-cols-3 lg:gap-x-6">
+      {list.map((p, i) => (
+        <ProductCard key={p.id} product={p} priority={i < 3} />
+      ))}
+    </div>
   );
 }
