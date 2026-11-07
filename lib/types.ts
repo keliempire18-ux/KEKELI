@@ -6,9 +6,10 @@ export interface Product {
   id: string;
   slug: string;
   name: string;
-  price: number; // en FCFA (XOF)
+  description?: string;
+  price: number; // FCFA (XOF)
   category: Category;
-  images: string[]; // URLs (Sanity CDN) ; [0] principale, [1] survol
+  images: string[]; // [0] principale, [1] survol
   colors: ProductColor[];
   sizes: string[];
   isNew?: boolean;

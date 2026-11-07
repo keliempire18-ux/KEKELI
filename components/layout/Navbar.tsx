@@ -3,12 +3,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
-import { useCartCount } from "@/lib/cart";
+import { useCart, useCartCount } from "@/lib/cart";
 import { CATEGORIES } from "@/lib/types";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const count = useCartCount();
+  const setCartOpen = useCart((s) => s.setOpen);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -37,14 +38,14 @@ export default function Navbar() {
 
           <div className="flex items-center justify-self-end">
             <ThemeToggle />
-            <Link href="/panier" aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`} className="relative grid size-10 place-items-center transition-colors hover:text-gold">
+            <button onClick={() => setCartOpen(true)} aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`} className="relative grid size-10 place-items-center transition-colors hover:text-gold">
               <ShoppingBag size={18} strokeWidth={1.25} />
               {count > 0 && (
                 <span key={count} className="absolute right-0.5 top-1 grid min-w-4 animate-pop place-items-center rounded-full bg-gold px-1 text-[10px] font-medium leading-4 text-bg">
                   {count}
                 </span>
               )}
-            </Link>
+            </button>
           </div>
         </nav>
       </header>
