@@ -21,18 +21,22 @@ export default function CartDrawer() {
 
   return (
     <>
+      {/* Fond : fondu à l'ouverture, clic = fermeture */}
       <div
         onClick={() => setOpen(false)}
-        className={`fixed inset-0 z-[60] bg-black/40 backdrop-blur-sm transition-opacity duration-500 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+        aria-hidden
+        className={`fixed inset-0 z-[60] bg-black/50 backdrop-blur-sm transition-opacity duration-500 ease-out ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
       />
+
+      {/* Panneau : glisse depuis la droite */}
       <aside
-        aria-hidden={!open}
+        inert={!open}
         aria-label="Panier"
-        className={`dark fixed right-0 top-0 z-[70] flex h-dvh w-full max-w-md flex-col border-l border-neutral-800 bg-black/40 text-fg backdrop-blur-md transition-transform duration-500 ease-out ${open ? "translate-x-0" : "translate-x-full"}`}
+        className={`dark fixed right-0 top-0 z-[70] flex h-dvh w-full flex-col border-l border-neutral-800/80 bg-black/60 text-fg backdrop-blur-xl will-change-transform transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] sm:w-[450px] ${open ? "translate-x-0" : "translate-x-full"}`}
       >
-        <div className="flex items-center justify-between border-b border-neutral-800 px-6 py-5">
+        <div className="flex items-center justify-between border-b border-neutral-800/80 px-6 py-5">
           <h2 className="font-display text-3xl font-light">Votre panier</h2>
-          <button onClick={() => setOpen(false)} aria-label="Fermer" className="transition-colors hover:text-gold">
+          <button onClick={() => setOpen(false)} aria-label="Fermer le panier" className="transition-colors hover:text-gold">
             <X size={20} strokeWidth={1.25} />
           </button>
         </div>
@@ -50,7 +54,7 @@ export default function CartDrawer() {
                   <p className="text-xs text-muted">{[l.size, l.color].filter(Boolean).join(" · ")}</p>
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 border border-neutral-800 px-2 py-1">
+                  <div className="flex items-center gap-3 rounded-full border border-neutral-800 px-3 py-1">
                     <button onClick={() => setQty(l.key, l.qty - 1)} aria-label="Moins"><Minus size={14} /></button>
                     <span className="w-4 text-center text-sm">{l.qty}</span>
                     <button onClick={() => setQty(l.key, l.qty + 1)} aria-label="Plus"><Plus size={14} /></button>
@@ -65,12 +69,12 @@ export default function CartDrawer() {
           ))}
         </ul>
 
-        <div className="border-t border-neutral-800 px-6 py-6">
+        <div className="border-t border-neutral-800/80 px-6 py-6">
           <div className="mb-4 flex items-baseline justify-between">
             <span className="text-sm text-muted">Total</span>
             <span className="font-display text-3xl">{formatPrice(total)}</span>
           </div>
-          <button disabled className="w-full cursor-not-allowed border border-gold py-4 text-xs uppercase tracking-[0.25em] text-gold opacity-60">
+          <button disabled className="w-full cursor-not-allowed rounded-full border border-gold py-4 text-xs uppercase tracking-[0.25em] text-gold opacity-60">
             Paiement bientôt disponible
           </button>
         </div>
