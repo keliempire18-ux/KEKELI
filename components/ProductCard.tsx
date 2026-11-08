@@ -21,7 +21,7 @@ export default function ProductCard({ product: p, priority = false }: { product:
   }
 
   return (
-    <article className="group">
+    <article className="group transition-transform duration-700 ease-out hover:scale-[1.02]">
       <div className="relative aspect-[3/4] overflow-hidden bg-surface">
         {main ? (
           <>
@@ -43,14 +43,15 @@ export default function ProductCard({ product: p, priority = false }: { product:
         <p className="pt-1 text-sm text-muted">{formatPrice(p.price)}</p>
       </div>
 
+      {/* Bouton capsule */}
       <button
         onClick={handleAdd}
-        className="group/btn relative mt-5 flex w-full items-center justify-center overflow-hidden border-[0.5px] border-gold/50 bg-transparent px-6 py-4 transition-all duration-500 hover:border-gold hover:shadow-[0_0_28px_-6px_var(--gold)]"
+        className="group/btn relative mt-5 flex w-full items-center justify-center overflow-hidden rounded-full border-[0.5px] border-neutral-700/60 bg-transparent px-6 py-3.5 transition-all duration-500 hover:border-gold hover:shadow-[0_0_28px_-6px_var(--gold)]"
       >
-        <span className="absolute inset-0 origin-bottom scale-y-0 bg-gold transition-transform duration-500 ease-out group-hover/btn:scale-y-100 group-active/btn:scale-y-100" aria-hidden />
+        <span className="absolute inset-0 origin-bottom scale-y-0 bg-gold transition-transform duration-300 ease-out group-hover/btn:scale-y-100 group-active/btn:scale-y-100" aria-hidden />
         <span className="absolute inset-y-0 -left-1/3 w-1/4 -skew-x-12 bg-white/50 opacity-0 transition-all duration-700 ease-out group-hover/btn:left-full group-hover/btn:opacity-100" aria-hidden />
 
-        <span className="relative flex items-center gap-3 text-xs uppercase tracking-[0.3em] transition-colors duration-500 group-hover/btn:text-black group-active/btn:text-black">
+        <span className="relative flex items-center gap-3 text-[11px] uppercase tracking-[0.3em] transition-colors duration-300 group-hover/btn:text-black group-active/btn:text-black">
           {added ? (
             <Check size={16} strokeWidth={1.5} className="animate-pop" />
           ) : (
