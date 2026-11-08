@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, ShoppingBag, X } from "lucide-react";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import Logo from "@/components/Logo";
 import { useCart, useCartCount } from "@/lib/cart";
 import { CATEGORIES } from "@/lib/types";
 
@@ -21,7 +22,7 @@ export default function Navbar() {
   return (
     <>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-line/60 bg-bg/70 backdrop-blur-xl">
-        <nav className="mx-auto grid h-16 max-w-[1600px] grid-cols-3 items-center px-4 md:px-8" aria-label="Navigation principale">
+        <nav className="mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-8" aria-label="Navigation principale">
           <button
             onClick={() => setOpen((o) => !o)}
             aria-expanded={open}
@@ -32,13 +33,17 @@ export default function Navbar() {
             <span className="hidden sm:inline">{open ? "Fermer" : "Menu"}</span>
           </button>
 
-          <Link href="/" className="justify-self-center font-display text-3xl font-light tracking-[0.18em]" aria-label="KEKELI, accueil">
-            KEKELI
+          <Link href="/" aria-label="KEKELI, accueil" className="justify-self-center">
+            <Logo className="text-xl md:text-2xl" />
           </Link>
 
           <div className="flex items-center justify-self-end">
             <ThemeToggle />
-            <button onClick={() => setCartOpen(true)} aria-label={`Panier, ${count} article${count > 1 ? "s" : ""}`} className="relative grid size-10 place-items-center transition-colors hover:text-gold">
+            <button
+              onClick={() => setCartOpen(true)}
+              aria-label={`Ouvrir le panier, ${count} article${count > 1 ? "s" : ""}`}
+              className="relative grid size-10 place-items-center transition-colors hover:text-gold"
+            >
               <ShoppingBag size={18} strokeWidth={1.25} />
               {count > 0 && (
                 <span key={count} className="absolute right-0.5 top-1 grid min-w-4 animate-pop place-items-center rounded-full bg-gold px-1 text-[10px] font-medium leading-4 text-bg">
@@ -50,11 +55,7 @@ export default function Navbar() {
         </nav>
       </header>
 
-      <div
-        id="menu-plein-ecran"
-        hidden={!open}
-        className="fixed inset-0 z-40 overflow-y-auto bg-bg px-4 pb-10 pt-28 md:px-8"
-      >
+      <div id="menu-plein-ecran" hidden={!open} className="fixed inset-0 z-40 overflow-y-auto bg-bg px-4 pb-10 pt-28 md:px-8">
         <ul className="mx-auto max-w-[1600px]">
           {CATEGORIES.map((c) => (
             <li key={c.slug} className="border-b border-line">
