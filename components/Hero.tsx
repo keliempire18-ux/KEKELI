@@ -1,7 +1,15 @@
+"use client";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 // Pour une vidéo cinématique : <Hero videoSrc="/hero.mp4" poster="/hero.jpg" /> (fichiers dans /public)
 export default function Hero({ videoSrc, poster }: { videoSrc?: string; poster?: string }) {
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setOn(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   return (
     <section className="relative flex h-dvh items-center justify-center overflow-hidden bg-[#050505] text-white">
       {videoSrc ? (
@@ -12,13 +20,29 @@ export default function Hero({ videoSrc, poster }: { videoSrc?: string; poster?:
       <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black" aria-hidden />
 
       <div className="relative z-10 px-4 text-center">
-        <h1 className="animate-rise font-display text-[clamp(3.5rem,14vw,11rem)] font-light tracking-[0.2em] indent-[0.2em]">KEKELI</h1>
-        <p className="animate-rise mx-auto mt-6 max-w-md text-lg font-light text-white/70 [animation-delay:0.5s]">
+        {/* Logo : les lettres s'écartent et se précisent au chargement */}
+        <h1
+          className={`font-display text-[clamp(2.75rem,11vw,9rem)] font-light uppercase leading-none drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)] transition-all duration-[2200ms] ease-out ${
+            on ? "pl-[0.35em] tracking-[0.35em] opacity-100 blur-0" : "pl-[0.08em] tracking-[0.08em] opacity-0 blur-md"
+          }`}
+        >
+          KEKELI
+        </h1>
+
+        <span
+          className={`mx-auto mt-8 block h-px bg-[#d4af37]/70 transition-all delay-700 duration-[1600ms] ease-out ${on ? "w-28 opacity-100" : "w-0 opacity-0"}`}
+          aria-hidden
+        />
+
+        <p
+          className={`mx-auto mt-8 max-w-md text-lg font-light text-white/70 transition-all delay-1000 duration-1000 ease-out ${on ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
+        >
           L’élégance, redessinée pour demain.
         </p>
+
         <Link
           href="#collection"
-          className="animate-rise group glass relative mt-12 inline-block overflow-hidden border border-[#d4af37]/60 px-10 py-4 text-xs uppercase tracking-[0.3em] [animation-delay:0.9s]"
+          className={`group glass relative mt-12 inline-block overflow-hidden border border-[#d4af37]/60 px-10 py-4 text-xs uppercase tracking-[0.3em] transition-all delay-[1300ms] duration-1000 ease-out ${on ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
           <span className="absolute inset-0 -translate-x-full bg-[#d4af37] transition-transform duration-700 ease-out group-hover:translate-x-0" />
           <span className="relative transition-colors duration-700 group-hover:text-black">Découvrir la collection</span>
