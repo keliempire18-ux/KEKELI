@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   title: { default: "KEKELI", template: "%s · KEKELI" },
   description: "Robes, jupes, chaussures, sacs, accessoires et perruques. Mode féminine haut de gamme.",
 };
-
+export const dynamic = "force-dynamic";
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" suppressHydrationWarning>
