@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Crown, Footprints, Gem, Menu, Shirt, ShoppingBag, Sparkles, X } from "lucide-react";
-import ThemeToggle from "@/components/ui/ThemeToggle";
 import Logo from "@/components/Logo";
 import { useCart, useCartCount } from "@/lib/cart";
 import { CATEGORIES, type Category } from "@/lib/types";
@@ -56,7 +55,6 @@ export default function Navbar() {
           </Link>
 
           <div className="flex items-center justify-self-end">
-            <ThemeToggle />
             <button
               onClick={() => setCartOpen(true)}
               aria-label={`Ouvrir le panier, ${count} article${count > 1 ? "s" : ""}`}
@@ -73,21 +71,19 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Fond : fondu, clic = fermeture */}
       <div
         onClick={() => setOpen(false)}
         aria-hidden
         className={`fixed inset-0 z-[55] bg-black/50 backdrop-blur-sm transition-opacity duration-500 ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
       />
 
-      {/* Panneau de rubriques : verre dépoli, glisse depuis la gauche */}
       <aside
         id="menu-categories"
         inert={!open}
         aria-label="Rubriques"
-        className={`dark fixed left-0 top-0 z-[60] flex h-dvh w-full max-w-sm flex-col border-r border-neutral-800/80 bg-black/70 text-fg backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-x-0" : "-translate-x-full"}`}
+        className={`fixed left-0 top-0 z-[60] flex h-dvh w-full max-w-sm flex-col border-r border-line bg-bg/80 text-fg backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
-        <div className="flex h-16 items-center justify-between border-b border-neutral-800/80 px-6">
+        <div className="flex h-16 items-center justify-between border-b border-line px-6">
           <Logo className="text-lg" />
           <button onClick={() => setOpen(false)} aria-label="Fermer le menu" className="transition-colors hover:text-gold">
             <X size={20} strokeWidth={1.25} />
@@ -99,14 +95,14 @@ export default function Navbar() {
             <li
               key={l.href}
               style={{ transitionDelay: open ? `${200 + i * 60}ms` : "0ms" }}
-              className={`border-b border-neutral-800/60 transition-all duration-700 ease-out ${open ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
+              className={`border-b border-line transition-all duration-700 ease-out ${open ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
             >
               <Link
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="group relative flex items-center gap-5 py-5 text-sm font-light uppercase tracking-[0.2em] text-neutral-300 transition-all duration-500 hover:translate-x-2 hover:text-gold"
+                className="group relative flex items-center gap-5 py-5 text-sm font-light uppercase tracking-[0.2em] text-muted transition-all duration-500 hover:translate-x-2 hover:text-gold"
               >
-                <span className="text-neutral-500 transition-colors duration-500 group-hover:text-gold">{l.icon}</span>
+                <span className="transition-colors duration-500 group-hover:text-gold">{l.icon}</span>
                 {l.label}
                 <span className="absolute bottom-0 left-0 h-px w-0 bg-gold shadow-[0_0_10px_var(--gold)] transition-all duration-500 group-hover:w-full" aria-hidden />
               </Link>
