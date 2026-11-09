@@ -16,8 +16,9 @@ export default function Hero({ videoSrc, poster }: { videoSrc?: string; poster?:
       {videoSrc ? (
         <video className="absolute inset-0 size-full object-cover opacity-60" src={videoSrc} poster={poster} autoPlay muted loop playsInline />
       ) : (
+        // Jour : fond parfaitement uni. Nuit : léger halo doré derrière le logo.
         <div
-          className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_35%,#f4eedd_0%,#ffffff_65%)] dark:bg-[radial-gradient(ellipse_at_50%_35%,#2b2309_0%,#050505_65%)]"
+          className="absolute inset-0 hidden bg-[radial-gradient(ellipse_at_50%_35%,#2b2309_0%,#050505_65%)] dark:block"
           aria-hidden
         />
       )}
@@ -25,7 +26,7 @@ export default function Hero({ videoSrc, poster }: { videoSrc?: string; poster?:
 
       <div className="relative z-10 px-4 text-center">
         <h1 aria-label="KEKELI">
-          <Logo className="text-[clamp(2.25rem,9vw,7rem)] drop-shadow-[0_2px_10px_rgba(0,0,0,0.12)] dark:drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]" />
+          <Logo className="text-[clamp(2.25rem,9vw,7rem)] drop-shadow-[0_2px_10px_rgba(0,0,0,0.08)] dark:drop-shadow-[0_2px_10px_rgba(255,255,255,0.15)]" />
         </h1>
 
         <span
