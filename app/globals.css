@@ -33,3 +33,7 @@ body { font-family: var(--font-sans); font-weight: 300; -webkit-font-smoothing: 
 :focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
 ::selection { background: var(--gold); color: var(--bg); }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+/* Fondu de 1 s lors du basculement automatique jour/nuit */
+html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
+  transition: background-color 1s ease, color 1s ease, border-color 1s ease, fill 1s ease, stroke 1s ease !important;
+}
