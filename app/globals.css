@@ -1,8 +1,24 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
-:root { --bg:#ffffff; --fg:#0a0a0a; --muted:#6e6c66; --line:#e8e6e0; --surface:#f5f4f1; --gold:#a8871c; }
-.dark { --bg:#050505; --fg:#f6f4ee; --muted:#8f8c84; --line:#222220; --surface:#0f0f0e; --gold:#d4af37; }
+/* JOUR : ivoire satiné, anthracite, or brossé */
+:root {
+  --bg: #f9f6f0;
+  --fg: #1a1a1a;
+  --muted: #6b665c;
+  --line: #e3dccd;
+  --surface: #f1ece0;
+  --gold: #a38a4d;
+}
+/* NUIT : noir profond, or lumineux */
+.dark {
+  --bg: #050505;
+  --fg: #f6f4ee;
+  --muted: #8f8c84;
+  --line: #222220;
+  --surface: #0f0f0e;
+  --gold: #d4af37;
+}
 
 @theme inline {
   --color-bg: var(--bg);
@@ -29,11 +45,20 @@
 }
 
 html { background: var(--bg); color: var(--fg); scroll-behavior: smooth; }
-body { font-family: var(--font-sans); font-weight: 300; -webkit-font-smoothing: antialiased; transition: background-color .4s, color .4s; }
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 1s ease-in-out, color 1s ease-in-out;
+}
 :focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
 ::selection { background: var(--gold); color: var(--bg); }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+
 /* Fondu de 1 s lors du basculement automatique jour/nuit */
 html.theme-fade, html.theme-fade *, html.theme-fade *::before, html.theme-fade *::after {
-  transition: background-color 1s ease, color 1s ease, border-color 1s ease, fill 1s ease, stroke 1s ease !important;
+  transition: background-color 1s ease-in-out, color 1s ease-in-out, border-color 1s ease-in-out, fill 1s ease-in-out, stroke 1s ease-in-out !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
 }
