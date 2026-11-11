@@ -1,27 +1,27 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { Crown, Footprints, Gem, Menu, Shirt, ShoppingBag, Sparkles, X } from "lucide-react";
+import { Crown, Footprints, Gem, Menu, Scissors, Shirt, ShoppingBag, Sparkles, X } from "lucide-react";
 import Logo from "@/components/Logo";
 import { useCart, useCartCount } from "@/lib/cart";
 import { CATEGORIES, type Category } from "@/lib/types";
 
-const svg = { width: 20, height: 20, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.25, strokeLinecap: "round", strokeLinejoin: "round" } as const;
+const svg = { width: 18, height: 18, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.25, strokeLinecap: "round", strokeLinejoin: "round" } as const;
 const Skirt = () => (<svg {...svg} aria-hidden><path d="M8 4h8l4 16H4L8 4z" /><path d="M8 8h8" /></svg>);
 const Handbag = () => (<svg {...svg} aria-hidden><path d="M5 9h14l1.5 11h-17L5 9z" /><path d="M9 9V7a3 3 0 0 1 6 0v2" /></svg>);
 
 const ICONS: Record<Category, React.ReactNode> = {
-  robes: <Shirt size={20} strokeWidth={1.25} />,
+  robes: <Shirt size={18} strokeWidth={1.25} />,
   jupes: <Skirt />,
-  chaussures: <Footprints size={20} strokeWidth={1.25} />,
+  chaussures: <Footprints size={18} strokeWidth={1.25} />,
   sacs: <Handbag />,
-  accessoires: <Gem size={20} strokeWidth={1.25} />,
-  perruques: <Crown size={20} strokeWidth={1.25} />,
+  accessoires: <Gem size={18} strokeWidth={1.25} />,
+  perruques: <Crown size={18} strokeWidth={1.25} />,
 };
 
-const LINKS = [
-  { href: "/#collection", label: "Nouveautés", icon: <Sparkles size={20} strokeWidth={1.25} /> },
-  ...CATEGORIES.map((c) => ({ href: `/collection/${c.slug}`, label: c.label, icon: ICONS[c.slug] })),
+const MAIN = [
+  { href: "/selection", label: "La Sélection" },
+  { href: "/institut", label: "L’Institut" },
 ];
 
 export default function Navbar() {
@@ -40,15 +40,27 @@ export default function Navbar() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 border-b border-line/60 bg-bg/70 backdrop-blur-xl">
         <nav className="mx-auto grid h-16 max-w-[1600px] grid-cols-[1fr_auto_1fr] items-center px-4 md:px-8" aria-label="Navigation principale">
-          <button
-            onClick={() => setOpen(true)}
-            aria-expanded={open}
-            aria-controls="menu-categories"
-            className="flex items-center gap-2 justify-self-start text-sm tracking-wide transition-colors hover:text-gold"
-          >
-            <Menu size={18} strokeWidth={1.25} />
-            <span className="hidden sm:inline">Menu</span>
-          </button>
+          <div className="justify-self-start">
+            <button
+              onClick={() => setOpen(true)}
+              aria-expanded={open}
+              aria-controls="menu-principal"
+              className="flex items-center gap-2 text-xs uppercase tracking-widest transition-colors hover:text-gold md:hidden"
+            >
+              <Menu size={18} strokeWidth={1.25} />
+              Menu
+            </button>
+            <ul className="hidden items-center gap-10 md:flex">
+              {MAIN.map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href} className="group relative block py-2 text-xs uppercase tracking-widest transition-colors duration-500 hover:text-gold">
+                    {l.label}
+                    <span className="absolute inset-x-0 bottom-0 h-px origin-left scale-x-0 bg-gold transition-transform duration-500 group-hover:scale-x-100" aria-hidden />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <Link href="/" aria-label="KEKELI, accueil" className="justify-self-center">
             <Logo className="text-xl md:text-2xl" />
@@ -78,10 +90,10 @@ export default function Navbar() {
       />
 
       <aside
-        id="menu-categories"
+        id="menu-principal"
         inert={!open}
-        aria-label="Rubriques"
-        className={`fixed left-0 top-0 z-[60] flex h-dvh w-full max-w-sm flex-col border-r border-line bg-bg/80 text-fg backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-x-0" : "-translate-x-full"}`}
+        aria-label="Menu"
+        className={`fixed left-0 top-0 z-[60] flex h-dvh w-full max-w-sm flex-col border-r border-line bg-bg/85 text-fg backdrop-blur-xl transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${open ? "translate-x-0" : "-translate-x-full"}`}
       >
         <div className="flex h-16 items-center justify-between border-b border-line px-6">
           <Logo className="text-lg" />
@@ -90,24 +102,31 @@ export default function Navbar() {
           </button>
         </div>
 
-        <ul className="flex-1 overflow-y-auto px-6 py-6">
-          {LINKS.map((l, i) => (
-            <li
-              key={l.href}
-              style={{ transitionDelay: open ? `${200 + i * 60}ms` : "0ms" }}
-              className={`border-b border-line transition-all duration-700 ease-out ${open ? "translate-x-0 opacity-100" : "-translate-x-4 opacity-0"}`}
-            >
-              <Link
-                href={l.href}
-                onClick={() => setOpen(false)}
-                className="group relative flex items-center gap-5 py-5 text-sm font-light uppercase tracking-[0.2em] text-muted transition-all duration-500 hover:translate-x-2 hover:text-gold"
-              >
-                <span className="transition-colors duration-500 group-hover:text-gold">{l.icon}</span>
-                {l.label}
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-gold shadow-[0_0_10px_var(--gold)] transition-all duration-500 group-hover:w-full" aria-hidden />
-              </Link>
-            </li>
-          ))}
+        <ul className="flex-1 overflow-y-auto px-6 py-4">
+          <li className="border-b border-line pb-4">
+            <Link href="/selection" onClick={() => setOpen(false)} className="flex items-center gap-4 py-4 text-sm uppercase tracking-widest transition-colors hover:text-gold">
+              <Sparkles size={18} strokeWidth={1.25} /> La Sélection
+            </Link>
+            <ul className="space-y-1 pl-9">
+              {CATEGORIES.map((c) => (
+                <li key={c.slug}>
+                  <Link
+                    href={`/collection/${c.slug}`}
+                    onClick={() => setOpen(false)}
+                    className="group flex items-center gap-4 py-2 text-xs font-light uppercase tracking-[0.2em] text-muted transition-all duration-500 hover:translate-x-2 hover:text-gold"
+                  >
+                    {ICONS[c.slug]}
+                    {c.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </li>
+          <li>
+            <Link href="/institut" onClick={() => setOpen(false)} className="flex items-center gap-4 py-6 text-sm uppercase tracking-widest transition-colors hover:text-gold">
+              <Scissors size={18} strokeWidth={1.25} /> L’Institut
+            </Link>
+          </li>
         </ul>
       </aside>
     </>

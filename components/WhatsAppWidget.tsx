@@ -1,40 +1,21 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X } from "lucide-react";
-
-// ➜ Remplacez par votre numéro WhatsApp : indicatif pays + numéro, chiffres uniquement (sans +, sans espaces).
-const PHONE = "22900000000";
+import { WHATSAPP_PHONE } from "@/lib/contact";
 
 const OPTIONS = [
-  {
-    emoji: "👗",
-    label: "Passer une commande personnalisée (Robes/Sacs)",
-    message: "Bonjour KEKELI, je souhaite passer une commande personnalisée et en savoir plus sur vos robes et vos sacs.",
-  },
-  {
-    emoji: "👑",
-    label: "Conseil & Customisation de Perruques",
-    message: "Bonjour KEKELI, j’ai besoin de conseils pour choisir et personnaliser une perruque haute qualité.",
-  },
-  {
-    emoji: "📦",
-    label: "Suivre l’état de ma livraison",
-    message: "Bonjour KEKELI, je vous contacte pour faire le suivi de ma livraison. Voici mon numéro de commande : ",
-  },
-  {
-    emoji: "✨",
-    label: "Parler à une conseillère KEKELI",
-    message: "Bonjour KEKELI, j’aimerais échanger avec l’une de vos conseillères.",
-  },
+  { emoji: "👗", label: "Passer une commande personnalisée (Robes/Sacs)", message: "Bonjour KEKELI, je souhaite passer une commande personnalisée et en savoir plus sur vos robes et vos sacs." },
+  { emoji: "👑", label: "Conseil & Customisation de Perruques", message: "Bonjour KEKELI, j’ai besoin de conseils pour choisir et personnaliser une perruque haute qualité." },
+  { emoji: "📦", label: "Suivre l’état de ma livraison", message: "Bonjour KEKELI, je vous contacte pour faire le suivi de ma livraison. Voici mon numéro de commande : " },
+  { emoji: "✨", label: "Parler à une conseillère KEKELI", message: "Bonjour KEKELI, j’aimerais échanger avec l’une de vos conseillères." },
 ];
 
-const link = (message: string) => `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+const link = (message: string) => `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
 
 export default function WhatsAppWidget() {
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 
-  // Ferme le menu : clic en dehors, ou touche Échap
   useEffect(() => {
     if (!open) return;
     const onPointer = (e: PointerEvent) => {
@@ -51,7 +32,6 @@ export default function WhatsAppWidget() {
 
   return (
     <div ref={ref} className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-4">
-      {/* Mini-menu : fondu + glissement vers le haut */}
       <div
         id="menu-whatsapp"
         inert={!open}
@@ -61,7 +41,6 @@ export default function WhatsAppWidget() {
       >
         <p className="font-display text-2xl font-light leading-tight">Comment pouvons-nous vous aider ?</p>
         <p className="mb-4 mt-1 text-xs text-muted">Notre équipe vous répond sur WhatsApp.</p>
-
         <ul className="space-y-2">
           {OPTIONS.map((o) => (
             <li key={o.label}>
@@ -70,7 +49,7 @@ export default function WhatsAppWidget() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setOpen(false)}
-                className="group flex items-center gap-3 rounded-xl border-[0.5px] border-line px-4 py-3 text-left text-[13px] font-light leading-snug transition-all duration-500 hover:translate-x-1 hover:border-gold hover:text-gold"
+                className="flex items-center gap-3 rounded-xl border-[0.5px] border-line px-4 py-3 text-left text-[13px] font-light leading-snug transition-all duration-500 hover:translate-x-1 hover:border-gold hover:text-gold"
               >
                 <span className="text-lg" aria-hidden>{o.emoji}</span>
                 <span>{o.label}</span>
@@ -80,7 +59,6 @@ export default function WhatsAppWidget() {
         </ul>
       </div>
 
-      {/* Bouton flottant */}
       <button
         onClick={() => setOpen((o) => !o)}
         aria-expanded={open}
