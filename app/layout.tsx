@@ -3,6 +3,7 @@ import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import CartDrawer from "@/components/CartDrawer";
 import WhatsAppWidget from "@/components/WhatsAppWidget";
+import FloatingSocials from "@/components/FloatingSocials";
 import ThemeProvider from "@/components/ThemeProvider";
 import { THEME_SCRIPT } from "@/lib/theme";
 import "@fontsource/cormorant-garamond/300.css";
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <CartDrawer />
           <WhatsAppWidget />
+          <FloatingSocials />
         </ThemeProvider>
       </body>
     </html>
